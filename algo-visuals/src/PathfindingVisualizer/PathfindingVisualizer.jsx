@@ -74,19 +74,21 @@ export default class PathfindingVisualizer extends Component {
   }
 
   render() {
-    const {grid, mouseIsPressed} = this.state;
+    const { grid, mouseIsPressed } = this.state;
 
     return (
-      <>
-        <button onClick={() => this.visualizeDijkstra()}>
-          Visualize Dijkstra's Algorithm
-        </button>
+      <div className="pathfinding-visualizer-container">
+        <div className="buttons-container">
+          <button onClick={() => this.visualizeDijkstra()}>
+            Visualize Dijkstra's Algorithm
+          </button>
+        </div>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
-              <div key={rowIdx}>
+              <div key={rowIdx} className="grid-row">
                 {row.map((node, nodeIdx) => {
-                  const {row, col, isFinish, isStart, isWall} = node;
+                  const { row, col, isFinish, isStart, isWall } = node;
                   return (
                     <Node
                       key={nodeIdx}
@@ -107,7 +109,7 @@ export default class PathfindingVisualizer extends Component {
             );
           })}
         </div>
-      </>
+      </div>
     );
   }
 }

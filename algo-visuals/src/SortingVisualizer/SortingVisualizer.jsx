@@ -15,6 +15,8 @@ const PRIMARY_COLOR = 'turquoise';
 // This is the color of array bars that are being compared throughout the animations.
 const SECONDARY_COLOR = 'red';
 
+const CONTAINER_HEIGHT = 400;
+
 export default class SortingVisualizer extends React.Component {
   constructor(props) {
     super(props);
@@ -54,7 +56,7 @@ export default class SortingVisualizer extends React.Component {
         setTimeout(() => {
           const [barOneIdx, newHeight] = animations[i];
           const barOneStyle = arrayBars[barOneIdx].style;
-          barOneStyle.height = `${newHeight}px`;
+          barOneStyle.height = `${(newHeight/ 730) * CONTAINER_HEIGHT}px`;
         }, i * ANIMATION_SPEED_MS);
       }
     }
@@ -89,33 +91,38 @@ export default class SortingVisualizer extends React.Component {
   }
 
   render() {
-    const {array} = this.state;
+    const { array } = this.state;
 
     return (
-      <div className="array-container">
-        {array.map((value, idx) => (
-          <div
-            className="array-bar"
-            key={idx}
-            style={{
-              backgroundColor: PRIMARY_COLOR,
-              height: `${value}px`,
-            }}></div>
-        ))}
-        <button onClick={() => this.resetArray()}>Generate New Array</button>
-        <button onClick={() => this.mergeSort()}>Merge Sort</button>
-        <button onClick={() => this.quickSort()}>Quick Sort</button>
-        <button onClick={() => this.heapSort()}>Heap Sort</button>
-        <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
-        <button onClick={() => this.testSortingAlgorithms()}>
-          Test Sorting Algorithms (BROKEN)
-        </button>
+      <div className="sorting-visualizer-container">
+        <div className="buttons-container">
+          <button onClick={() => this.resetArray()}>Generate New Array</button>
+          <button onClick={() => this.mergeSort()}>Merge Sort</button>
+          <button onClick={() => this.quickSort()}>Quick Sort</button>
+          <button onClick={() => this.heapSort()}>Heap Sort</button>
+          <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+          <button onClick={() => this.testSortingAlgorithms()}>
+            Test Sorting Algorithms (BROKEN)
+          </button>
+        </div>
+        <div className="array-container" style={{ height: `${CONTAINER_HEIGHT}px` }}>
+          {array.map((value, idx) => (
+            <div
+              className="array-bar"
+              key={idx}
+              style={{
+                backgroundColor: PRIMARY_COLOR,
+                height: `${(value / 730) * CONTAINER_HEIGHT}px`,
+              }}
+            ></div>
+          ))}
+        </div>
       </div>
     );
   }
 }
 
-// From https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
+
 function randomIntFromInterval(min, max) {
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
