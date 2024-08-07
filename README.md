@@ -9,6 +9,7 @@ Algorithm Visualizer is a web application designed to help you understand and vi
 - Visualize pathfinding algorithms like Dijkstra, A*, BFS, and DFS.
 - Visualize sorting algorithms like Bubble Sort, Quick Sort, Merge Sort, and Insertion Sort.
 - Interactive controls to step through algorithms and adjust parameters.
+- Working on adding BFS, DFS, and sorting algos.
 
 ## Installation
 
