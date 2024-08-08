@@ -1,45 +1,43 @@
-
-import React from 'react';
-import {getMergeSortAnimations} from '../../algorithms/sortingAlgorithm';
+import React, { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
+import { getMergeSortAnimations } from '../../algorithms/sortingAlgorithm';
 import './SortingVisualizer.css';
 
 // Change this value for the speed of the animations.
 const ANIMATION_SPEED_MS = 1;
-
 // Change this value for the number of bars (value) in the array.
 const NUMBER_OF_ARRAY_BARS = 310;
-
 // This is the main color of the array bars.
 const PRIMARY_COLOR = 'turquoise';
-
 // This is the color of array bars that are being compared throughout the animations.
 const SECONDARY_COLOR = 'red';
-
 const CONTAINER_HEIGHT = 400;
 
-export default class SortingVisualizer extends React.Component {
-  constructor(props) {
-    super(props);
+const SortingVisualizer = forwardRef((props, ref) => {
+  const [array, setArray] = useState([]);
 
-    this.state = {
-      array: [],
-    };
-  }
+  useEffect(() => {
+    resetArray();
+  }, []);
 
-  componentDidMount() {
-    this.resetArray();
-  }
+  useImperativeHandle(ref, () => ({
+    resetArray,
+    mergeSort,
+    quickSort,
+    heapSort,
+    bubbleSort,
+    testSortingAlgorithms,
+  }));
 
-  resetArray() {
-    const array = [];
+  const resetArray = () => {
+    const newArray = [];
     for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
-      array.push(randomIntFromInterval(5, 730));
+      newArray.push(randomIntFromInterval(5, 730));
     }
-    this.setState({array});
-  }
+    setArray(newArray);
+  };
 
-  mergeSort() {
-    const animations = getMergeSortAnimations(this.state.array);
+  const mergeSort = () => {
+    const animations = getMergeSortAnimations(array);
     for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName('array-bar');
       const isColorChange = i % 3 !== 2;
@@ -56,65 +54,58 @@ export default class SortingVisualizer extends React.Component {
         setTimeout(() => {
           const [barOneIdx, newHeight] = animations[i];
           const barOneStyle = arrayBars[barOneIdx].style;
-          barOneStyle.height = `${(newHeight/ 730) * CONTAINER_HEIGHT}px`;
+          barOneStyle.height = `${(newHeight / 730) * CONTAINER_HEIGHT}px`;
         }, i * ANIMATION_SPEED_MS);
       }
     }
-  }
+  };
 
-  quickSort() {
-    // We leave it as an exercise to the viewer of this code to implement this method.
-  }
+  const quickSort = () => {
+    // Implementation of quickSort goes here
+  };
 
-  heapSort() {
-    // We leave it as an exercise to the viewer of this code to implement this method.
-  }
+  const heapSort = () => {
+    // Implementation of heapSort goes here
+  };
 
-  bubbleSort() {
-    // We leave it as an exercise to the viewer of this code to implement this method.
-  }
+  const bubbleSort = () => {
+    // Implementation of bubbleSort goes here
+  };
 
-  // NOTE: This method will only work if your sorting algorithms actually return
-  // the sorted arrays; if they return the animations (as they currently do), then
-  // this method will be broken.
-  testSortingAlgorithms() {
+  const testSortingAlgorithms = () => {
     for (let i = 0; i < 100; i++) {
-      const array = [];
+      const newArray = [];
       const length = randomIntFromInterval(1, 1000);
       for (let i = 0; i < length; i++) {
-        array.push(randomIntFromInterval(-1000, 1000));
+        newArray.push(randomIntFromInterval(-1000, 1000));
       }
-      const javaScriptSortedArray = array.slice().sort((a, b) => a - b);
-      const mergeSortedArray = getMergeSortAnimations(array.slice());
+      const javaScriptSortedArray = newArray.slice().sort((a, b) => a - b);
+      const mergeSortedArray = getMergeSortAnimations(newArray.slice());
       console.log(arraysAreEqual(javaScriptSortedArray, mergeSortedArray));
     }
-  }
+  };
 
-  render() {
-    const { array } = this.state;
-
-    return (
-      <div className="sorting-visualizer-container">
-        <div className="array-container" style={{ height: `${CONTAINER_HEIGHT}px` }}>
-          {array.map((value, idx) => (
-            <div
-              className="array-bar"
-              key={idx}
-              style={{
-                backgroundColor: PRIMARY_COLOR,
-                height: `${(value / 730) * CONTAINER_HEIGHT}px`,
-              }}
-            ></div>
-          ))}
-        </div>
+  return (
+    <div className="sorting-visualizer-container">
+      <div className="array-container" style={{ height: `${CONTAINER_HEIGHT}px` }}>
+        {array.map((value, idx) => (
+          <div
+            className="array-bar"
+            key={idx}
+            style={{
+              backgroundColor: PRIMARY_COLOR,
+              height: `${(value / 730) * CONTAINER_HEIGHT}px`,
+            }}
+          ></div>
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+});
 
+export default SortingVisualizer;
 
 function randomIntFromInterval(min, max) {
-  // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 

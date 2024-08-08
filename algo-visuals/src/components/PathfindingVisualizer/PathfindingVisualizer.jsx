@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect, useImperativeHandle, forwardRef} from 'react';
 import Node from './Node/Node';
 import {dijkstra, getNodesInShortestPathOrder} from '../../algorithms/dijkstra';
 
@@ -9,40 +9,41 @@ const START_NODE_COL = 15;
 const FINISH_NODE_ROW = 10;
 const FINISH_NODE_COL = 35;
 
-export default class PathfindingVisualizer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      grid: [],
-      mouseIsPressed: false,
-    };
+const PathfindingVisualizer = forwardRef((props, ref) => {
+  const [grid, setGrid] = useState([]);
+  const [mouseIsPressed, setMouseIsPressed] = useState(false);
+
+  useEffect(() => {
+    const initialGrid = getInitialGrid();
+    setGrid(initialGrid);
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    visualizeDijkstra,
+  }));
+
+  const handleMouseDown = (row, col) => {
+    const newGrid = getNewGridWithWallToggled(grid, row, col);
+    setGrid(newGrid);
+    setMouseIsPressed(true);
   }
 
-  componentDidMount() {
-    const grid = getInitialGrid();
-    this.setState({grid});
-  }
+  const handleMouseEnter = (row, col) => {
+    if (!mouseIsPressed) return;
+    const newGrid = getNewGridWithWallToggled(grid, row, col);
+    setGrid(newGrid);
+  };
 
-  handleMouseDown(row, col) {
-    const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
-    this.setState({grid: newGrid, mouseIsPressed: true});
-  }
+  const handleMouseUp = () => {
+    setMouseIsPressed(false);
+  };
 
-  handleMouseEnter(row, col) {
-    if (!this.state.mouseIsPressed) return;
-    const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
-    this.setState({grid: newGrid});
-  }
 
-  handleMouseUp() {
-    this.setState({mouseIsPressed: false});
-  }
-
-  animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+  const animateDijkstra = (visitedNodesInOrder, nodesInShortestPathOrder) => {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
-          this.animateShortestPath(nodesInShortestPathOrder);
+          animateShortestPath(nodesInShortestPathOrder);
         }, 10 * i);
         return;
       }
@@ -52,9 +53,9 @@ export default class PathfindingVisualizer extends Component {
           'node node-visited';
       }, 10 * i);
     }
-  }
+  };
 
-  animateShortestPath(nodesInShortestPathOrder) {
+  const animateShortestPath = (nodesInShortestPathOrder) => {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
@@ -62,53 +63,47 @@ export default class PathfindingVisualizer extends Component {
           'node node-shortest-path';
       }, 50 * i);
     }
-  }
+  };
 
-  visualizeDijkstra() {
-    const {grid} = this.state;
+  const visualizeDijkstra = () => {
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
-  }
+    animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+  };
 
-  render() {
-    const { grid, mouseIsPressed } = this.state;
-
-    return (
-      <div className="pathfinding-visualizer-container">
-        <div className="grid">
-          {grid.map((row, rowIdx) => {
-            return (
-              <div key={rowIdx} className="grid-row">
-                {row.map((node, nodeIdx) => {
-                  const { row, col, isFinish, isStart, isWall } = node;
-                  return (
-                    <Node
-                      key={nodeIdx}
-                      col={col}
-                      isFinish={isFinish}
-                      isStart={isStart}
-                      isWall={isWall}
-                      mouseIsPressed={mouseIsPressed}
-                      onMouseDown={(row, col) => this.handleMouseDown(row, col)}
-                      onMouseEnter={(row, col) =>
-                        this.handleMouseEnter(row, col)
-                      }
-                      onMouseUp={() => this.handleMouseUp()}
-                      row={row}></Node>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
+  return (
+    <div className="pathfinding-visualizer-container">
+      <div className="grid">
+        {grid.map((row, rowIdx) => (
+          <div key={rowIdx} className="grid-row">
+            {row.map((node, nodeIdx) => {
+              const { row, col, isFinish, isStart, isWall } = node;
+              return (
+                <Node
+                  key={nodeIdx}
+                  col={col}
+                  isFinish={isFinish}
+                  isStart={isStart}
+                  isWall={isWall}
+                  mouseIsPressed={mouseIsPressed}
+                  onMouseDown={() => handleMouseDown(row, col)}
+                  onMouseEnter={() => handleMouseEnter(row, col)}
+                  onMouseUp={() => handleMouseUp()}
+                  row={row}></Node>
+              );
+            })}
+          </div>
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+});
 
+export default PathfindingVisualizer;
+
+// Helper functions to initialize and manage the grid
 const getInitialGrid = () => {
   const grid = [];
   for (let row = 0; row < 20; row++) {
