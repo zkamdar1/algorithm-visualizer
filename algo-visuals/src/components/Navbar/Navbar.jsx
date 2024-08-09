@@ -18,6 +18,7 @@ export const Navbar = ({
             <button onClick={() => switchView('pathfinder')}>Pathfinder Visualizer</button>
             <button onClick={() => switchView('sorting')}>Sorting Visualizer</button>
         </div>
+        <h2 className='title'>Algo Visualizer</h2>
         <div className='algo-buttons'>
             {currentView === 'pathfinder' ? (
                 <>
