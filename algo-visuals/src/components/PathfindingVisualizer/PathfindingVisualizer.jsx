@@ -24,8 +24,7 @@ const PathfindingVisualizer = forwardRef((props, ref) => {
   }));
 
   const resetGrid = () => {
-    const initialGrid = getInitialGrid();
-    setGrid(initialGrid);
+    window.location.reload();
   };
 
   const handleMouseDown = (row, col) => {
