@@ -20,4 +20,4 @@ Algorithm Visualizer is a web application designed to help you understand and vi
 
 ## Live Algorithm Visualizer
 
-Check out the algorithm visualizer live [here](https://zkamdar1/github.io/algorithm-visualizer/)
+Check out the algorithm visualizer live [here](https://zkamdar1.github.io/algorithm-visualizer/)
