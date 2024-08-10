@@ -5,6 +5,7 @@ export const Navbar = ({
     switchView, 
     currentView,
     visualizeDijkstra,
+    resetGrid,
     resetArray,
     mergeSort,
     quickSort,
@@ -22,6 +23,7 @@ export const Navbar = ({
         <div className='algo-buttons'>
             {currentView === 'pathfinder' ? (
                 <>
+                    <button onClick={resetGrid}>Reset Grid</button>
                     <button onClick={(visualizeDijkstra)}>
                     Visualize Dijkstra's Algorithm
                     </button>

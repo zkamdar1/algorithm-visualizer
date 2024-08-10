@@ -20,7 +20,13 @@ const PathfindingVisualizer = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     visualizeDijkstra,
+    resetGrid,
   }));
+
+  const resetGrid = () => {
+    const initialGrid = getInitialGrid();
+    setGrid(initialGrid);
+  };
 
   const handleMouseDown = (row, col) => {
     const newGrid = getNewGridWithWallToggled(grid, row, col);

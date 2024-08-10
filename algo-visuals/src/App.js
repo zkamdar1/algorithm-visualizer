@@ -21,6 +21,7 @@ function App() {
         switchView={switchView} 
         currentView={currentView}
         visualizeDijkstra={() => pathfindingRef.current.visualizeDijkstra()}
+        resetGrid={() => pathfindingRef.current.resetGrid()}
         resetArray={() => sortingRef.current.resetArray()}
         mergeSort={() => sortingRef.current.mergeSort()}
         quickSort={() => sortingRef.current.quickSort()}
