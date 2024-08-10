@@ -13,10 +13,10 @@ Algorithm Visualizer is a web application designed to help you understand and vi
 
 ## TO-DO
 
--Implement more pathfinding and sorting algorithms
--Implement interactive controls for speed, step through, and parameters
--Improve styling and layout of navbar
--Add edge case functionality to prevent breaking of site
+- Implement more pathfinding and sorting algorithms
+- Implement interactive controls for speed, step through, and parameters
+- Improve styling and layout of navbar
+- Add edge case functionality to prevent breaking of site
 
 ## Live Algorithm Visualizer
 
