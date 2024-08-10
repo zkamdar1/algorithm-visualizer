@@ -11,15 +11,14 @@ Algorithm Visualizer is a web application designed to help you understand and vi
 - Interactive controls to step through algorithms and adjust parameters.
 - Working on adding BFS, DFS, and sorting algos.
 
-## Installation
+## TO-DO
 
-### Prerequisites
+-Implement more pathfinding and sorting algorithms
+-Implement interactive controls for speed, step through, and parameters
+-Improve styling and layout of navbar
+-Add edge case functionality to prevent breaking of site
 
-- Node.js and npm installed on your machine.
+## Live Algorithm Visualizer
 
-### Steps
+Check out the algorithm visualizer live [here] (https://zkamdar1/github.io/algorithm-visualizer/)
 
-1. **Clone the Repository:**
-   ```sh
-   git clone https://github.com/yourusername/algorithm-visualizer.git
-   cd algorithm-visualizer
